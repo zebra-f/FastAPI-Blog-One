@@ -1,3 +1,10 @@
-uvicorn main:app  // to run the server 
-uvicorn main:app --reload  // to run the server in a reload mode (automatically refreshes itself upon saving a file) 
+Every command should be run from the root directory of this project.
+
+[Linux]
+python3 -m venv .venv
+source .venv/bin/activate
+
+
+uvicorn blog.main:app  // to run the server 
+uvicorn blog.main:app --reload  // to run the server in a reload mode (automatically refreshes itself upon saving a file) 
 
