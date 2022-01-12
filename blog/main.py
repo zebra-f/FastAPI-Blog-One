@@ -29,12 +29,18 @@ def index():
 
 
 @app.post('/blog', status_code=status.HTTP_201_CREATED)
-def create(blog: schemas.Blog, db: Session=Depends(get_db)):
+def create_blog(blog: schemas.Blog, db: Session=Depends(get_db)):
     new_blog = models.Blog(title=blog.title, body=blog.body)
     db.add(new_blog)
     db.commit()
     db.refresh(new_blog)
     return new_blog
+
+
+@app.delete('/blog/{id}')
+def delete_blog(id: int):
+    pass
+
 
 
 @app.get('/blog')
