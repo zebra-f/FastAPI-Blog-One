@@ -1,8 +1,6 @@
-from fastapi import FastAPI, Depends, status, Response, HTTPException
-import fastapi
-from pydantic import BaseModel
+from fastapi import FastAPI, Depends, status, HTTPException
 from sqlalchemy.orm import Session
-from starlette.status import HTTP_202_ACCEPTED
+from typing import List
 
 from . import schemas, models
 from .database import engine, SessionLocal
@@ -28,6 +26,9 @@ def index():
         '/redoc': 'ReDoc documentation'
         }
 
+# BLOG ---- BLOG ---- BLOG ----
+# BLOG ---- BLOG ---- BLOG ----   
+# BLOG ---- BLOG ---- BLOG ---- 
 
 @app.post('/blog', status_code=status.HTTP_201_CREATED)
 def create_blog(request: schemas.Blog, db: Session=Depends(get_db)):
@@ -60,6 +61,7 @@ def update_blog(id: int, request: schemas.Blog, db: Session=Depends(get_db)):
         raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, 
                             detail=f"id {id} is not aviable.")
 
+# GET ---- GET ---- GET ---- GET
 
 @app.get('/blog')
 def get_blogs(db: Session=Depends(get_db)):
@@ -67,8 +69,14 @@ def get_blogs(db: Session=Depends(get_db)):
     return blogs
 
 
-@app.get('/blog/{id}', status_code=status.HTTP_200_OK)
-def get_blog(id: int, response: Response, db: Session=Depends(get_db)):
+@app.get('/blog/titles', response_model=List[schemas.GetBlogTitle])
+def get_blogs_title(db: Session=Depends(get_db)):
+    blogs = db.query(models.Blog).all()
+    return blogs
+
+
+@app.get('/blog/{id}', status_code=status.HTTP_200_OK,)
+def get_blog(id: int, db: Session=Depends(get_db)):
     blog = db.query(models.Blog).filter(models.Blog.id == id).first()
     if blog:
         return blog
@@ -77,3 +85,17 @@ def get_blog(id: int, response: Response, db: Session=Depends(get_db)):
                             detail=f"id {id} is not aviable.")
         # response.status_code = status.HTTP_404_NOT_FOUND
         # return {'details': f"id {id} is not aviable."}
+
+
+@app.get('/blog/{id}/title', status_code=status.HTTP_200_OK, response_model=schemas.GetBlogTitle)
+def get_blog_title(id: int, db: Session=Depends(get_db)):
+    blog = db.query(models.Blog).filter(models.Blog.id == id).first()
+    if blog:
+        return blog
+    else:
+        raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, 
+                            detail=f"id {id} is not aviable.")
+
+# USER ---- USER ---- USER ----
+# USER ---- USER ---- USER ----
+# USER ---- USER ---- USER ----

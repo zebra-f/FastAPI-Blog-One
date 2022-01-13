@@ -1,6 +1,9 @@
-from .database import Base
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import declarative_base
+
+
+# declarative base class
+Base = declarative_base()
 
 
 class Blog(Base):
