@@ -151,6 +151,7 @@ def get_users(db: Session=Depends(get_db)):
         tags=["Users"])
 def get_user(id: int, db: Session=Depends(get_db)):
     user = db.query(models.User).filter(models.User.id == id).first()
+    # print(user.blogs[0].title)
     if user:
         return user
     else:
@@ -158,3 +159,13 @@ def get_user(id: int, db: Session=Depends(get_db)):
                             detail=f"id {id} is not aviable.")
 
 
+@app.get('/users/{id}/blogs', status_code=status.HTTP_200_OK, response_model=schemas.UserNameEmailBlogs,
+        tags=["Users"])
+def get_user(id: int, db: Session=Depends(get_db)):
+    user = db.query(models.User).filter(models.User.id == id).first()
+    # print(user.blogs[0].title)
+    if user:
+        return user
+    else:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
+                            detail=f"id {id} is not aviable.")
