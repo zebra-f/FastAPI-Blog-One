@@ -22,8 +22,8 @@ def get_db():
         db.close()
 
 
-# ENDPOINTS ---- ENDPOINTS ---- ENDPOINTS ----------
-# ENDPOINTS ---- ENDPOINTS ---- ENDPOINTS ------- 
+# ENDPOINTS ---- ENDPOINTS ---- ENDPOINTS --------
+# ENDPOINTS ---- ENDPOINTS ---- ENDPOINTS ------
 # ENDPOINTS ---- ENDPOINTS ---- ENDPOINTS ----
 
 
@@ -34,22 +34,25 @@ def index():
         '/redoc': 'ReDoc documentation'
         }
 
-# BLOGS ---- BLOGS ---- BLOGS ----------
-# BLOGS ---- BLOGS ---- BLOGS -------
+# BLOGS ---- BLOGS ---- BLOGS --------
+# BLOGS ---- BLOGS ---- BLOGS ------
 # BLOGS ---- BLOGS ---- BLOGS ----    
 
+                                                        # CREATE ---- CREATE ---- CREATE ---- CREATE
 @app.post('/blogs', status_code=status.HTTP_201_CREATED,
         tags=["Blogs"])
 def create_blog(request: schemas.Blog, db: Session=Depends(get_db)):
     new_blog = models.Blog(title = request.title, 
-                    body = request.body)
+                            body = request.body,
+                            author_id = 1)
     db.add(new_blog)
     db.commit()
     db.refresh(new_blog)
     return new_blog
 
 
-@app.delete('/blogs/{id}', status_code=status.HTTP_204_NO_CONTENT,
+                                                        # DELETE ---- DELETE ---- DELETE ---- DELETE
+@app.delete('/blogs/{id}', status_code=status.HTTP_204_NO_CONTENT, 
         tags=["Blogs"])
 def delete_blog(id: int, db: Session=Depends(get_db)):
     blog = db.query(models.Blog).filter(models.Blog.id == id)
@@ -61,6 +64,7 @@ def delete_blog(id: int, db: Session=Depends(get_db)):
                             detail=f"id {id} is not aviable.")
 
 
+                                                        # UPDATE ---- UPDATE ---- UPDATE ---- UPDATE
 @app.put('/blogs/{id}', status_code=status.HTTP_202_ACCEPTED,
         tags=["Blogs"])
 def update_blog(id: int, request: schemas.Blog, db: Session=Depends(get_db)):
@@ -73,8 +77,8 @@ def update_blog(id: int, request: schemas.Blog, db: Session=Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
                             detail=f"id {id} is not aviable.")
 
-# GET ---- GET ---- GET ---- GET ----
 
+                                                        # READ ---- READ ---- READ ---- READ
 @app.get('/blogs',
         tags=["Blogs"])
 def get_blogs(db: Session=Depends(get_db)):
@@ -95,7 +99,7 @@ def get_blogs_title(db: Session=Depends(get_db)):
     return blogs
 
 
-@app.get('/blogs/{id}', status_code=status.HTTP_200_OK,
+@app.get('/blogs/{id}', status_code=status.HTTP_200_OK, response_model=schemas.BlogTitleBodyAuthor,
         tags=["Blogs"])
 def get_blog(id: int, db: Session=Depends(get_db)):
     blog = db.query(models.Blog).filter(models.Blog.id == id).first()
@@ -118,32 +122,29 @@ def get_blog_title(id: int, db: Session=Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
                             detail=f"id {id} is not aviable.")
 
-# USERS ---- USERS ---- USERS ----------
-# USERS ---- USERS ---- USERS -------   
+# USERS ---- USERS ---- USERS --------
+# USERS ---- USERS ---- USERS ------
 # USERS ---- USERS ---- USERS ----   
 
+                                                        # CREATE ---- CREATE ---- CREATE ---- CREATE
 @app.post('/users', status_code=status.HTTP_201_CREATED, response_model=schemas.UserNameEmail,
         tags=["Users"])
 def create_user(request: schemas.User, db: Session=Depends(get_db)):
     new_user = models.User(name = request.name, 
-                        email = request.email, 
-                        password = get_password_hash(request.password))
+                            email = request.email, 
+                            password = get_password_hash(request.password))
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
     return new_user
 
-# GET ---- GET ---- GET ---- GET ----
 
-@app.get('/users', status_code=status.HTTP_200_OK, response_model=schemas.UserNameEmail,
+                                                        # READ ---- READ ---- READ ---- READ
+@app.get('/users', status_code=status.HTTP_200_OK, response_model=List[schemas.UserNameEmail],
         tags=["Users"])
 def get_users(db: Session=Depends(get_db)):
     users = db.query(models.User).all()
-    if users:
-        return users
-    else:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
-                            detail=f"id {id} is not aviable.")
+    return users
 
 
 @app.get('/users/{id}', status_code=status.HTTP_200_OK, response_model=schemas.UserNameEmail,
