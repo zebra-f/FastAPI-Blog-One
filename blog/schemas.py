@@ -27,6 +27,9 @@ class Blog(BaseModel):
     title: str
     body: str
 
+    class Config:
+        orm_mode = True   
+
 
 class BlogTitleBodyAuthor(BaseModel):
     title:str
@@ -43,14 +46,6 @@ class BlogTitle(BaseModel):
     class Config:
         orm_mode = True
 
-
-class BlogTitleBody(BaseModel):
-    title: str
-    body: str
-    
-    class Config:
-        orm_mode = True       
-
 # USER ---- USER ---- USER --------
 # USER ---- USER ---- USER ------
 # USER ---- USER ---- USER ----
@@ -58,7 +53,7 @@ class BlogTitleBody(BaseModel):
 class UserNameEmailBlogs(BaseModel):
     name: str
     email: str
-    blogs: List[BlogTitleBody]
+    blogs: List[Blog]
 
 
     class Config:
