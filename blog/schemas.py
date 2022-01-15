@@ -18,7 +18,6 @@ class UserNameEmail(BaseModel):
     class Config:
         orm_mode = True
 
-
 # BLOG ---- BLOG ---- BLOG --------
 # BLOG ---- BLOG ---- BLOG ------ 
 # BLOG ---- BLOG ---- BLOG ---- 

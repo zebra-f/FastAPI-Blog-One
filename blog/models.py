@@ -12,9 +12,9 @@ class Blog(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, unique=True, index=True)
     body = Column(String)
+    
     # foreign key
     author_id = Column(Integer, ForeignKey('users.id'), nullable=False)   
-
     author = relationship("User", back_populates="blogs")
 
 
