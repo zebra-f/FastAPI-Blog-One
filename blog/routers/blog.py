@@ -6,12 +6,13 @@ from .. import schemas, models
 from ..database import get_db
 
 
-router = APIRouter()
+router = APIRouter(
+    tags=["Blogs"]
+)
 
 
                                                         # CREATE ---- CREATE ---- CREATE ---- CREATE
-@router.post('/blogs', status_code=status.HTTP_201_CREATED,
-        tags=["Blogs"])
+@router.post('/blogs', status_code=status.HTTP_201_CREATED)
 def create_blog(request: schemas.Blog, db: Session=Depends(get_db)):
     new_blog = models.Blog(title = request.title, 
                             body = request.body,
@@ -23,8 +24,7 @@ def create_blog(request: schemas.Blog, db: Session=Depends(get_db)):
 
 
                                                         # DELETE ---- DELETE ---- DELETE ---- DELETE
-@router.delete('/blogs/{id}', status_code=status.HTTP_204_NO_CONTENT, 
-        tags=["Blogs"])
+@router.delete('/blogs/{id}', status_code=status.HTTP_204_NO_CONTENT)
 def delete_blog(id: int, db: Session=Depends(get_db)):
     blog = db.query(models.Blog).filter(models.Blog.id == id)
     if blog.first():
@@ -36,8 +36,7 @@ def delete_blog(id: int, db: Session=Depends(get_db)):
 
 
                                                         # UPDATE ---- UPDATE ---- UPDATE ---- UPDATE
-@router.put('/blogs/{id}', status_code=status.HTTP_202_ACCEPTED,
-        tags=["Blogs"])
+@router.put('/blogs/{id}', status_code=status.HTTP_202_ACCEPTED)
 def update_blog(id: int, request: schemas.Blog, db: Session=Depends(get_db)):
     blog = db.query(models.Blog).filter(models.Blog.id == id)
     if blog.first():
@@ -50,8 +49,7 @@ def update_blog(id: int, request: schemas.Blog, db: Session=Depends(get_db)):
 
 
                                                         # READ ---- READ ---- READ ---- READ
-@router.get('/blogs',
-        tags=["Blogs"])
+@router.get('/blogs')
 def get_blogs(db: Session=Depends(get_db)):
     # list of objects e.g. [<blog.models.Blog object at 0x7f68fa1602e0>, 
     #                       <blog.models.Blog object at 0x7f68fa160280>, 
@@ -63,15 +61,15 @@ def get_blogs(db: Session=Depends(get_db)):
     return blogs
 
 
-@router.get('/blogs/titles', response_model=List[schemas.BlogTitle],
-        tags=["Blogs"])
+@router.get('/blogs/titles', 
+        response_model=List[schemas.BlogTitle])
 def get_blogs_title(db: Session=Depends(get_db)):
     blogs = db.query(models.Blog).all()
     return blogs
 
 
-@router.get('/blogs/{id}', status_code=status.HTTP_200_OK, response_model=schemas.BlogTitleBodyAuthor,
-        tags=["Blogs"])
+@router.get('/blogs/{id}', status_code=status.HTTP_200_OK, 
+        response_model=schemas.BlogTitleBodyAuthor)
 def get_blog(id: int, db: Session=Depends(get_db)):
     blog = db.query(models.Blog).filter(models.Blog.id == id).first()
 
@@ -84,8 +82,8 @@ def get_blog(id: int, db: Session=Depends(get_db)):
                             detail=f"id {id} is not aviable.")
 
 
-@router.get('/blogs/{id}/title', status_code=status.HTTP_200_OK, response_model=schemas.BlogTitle,
-        tags=["Blogs"])
+@router.get('/blogs/{id}/title', status_code=status.HTTP_200_OK, 
+        response_model=schemas.BlogTitle)
 def get_blog_title(id: int, db: Session=Depends(get_db)):
     blog = db.query(models.Blog).filter(models.Blog.id == id).first()
     if blog:
