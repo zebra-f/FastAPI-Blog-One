@@ -4,7 +4,7 @@ from typing import List
 
 from .. import schemas, models
 from ..database import get_db
-from ..pwd import get_password_hash, verify_password
+from ..pwd import get_password_hash
 
 
 router = APIRouter(

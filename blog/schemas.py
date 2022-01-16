@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 
 # USER ---- USER ---- USER --------
 # USER ---- USER ---- USER ------
@@ -58,7 +58,22 @@ class UserNameEmailBlogs(BaseModel):
     class Config:
         orm_mode = True
 
+# LOGIN ---- LOGIN ---- LOGIN --------
+# LOGIN ---- LOGIN ---- LOGIN ------
+# LOGIN ---- LOGIN ---- LOGIN ----
 
 class Login(BaseModel):
     email: str
     password: str
+
+# TOKEN ---- TOKEN ---- TOKEN --------
+# TOKEN ---- TOKEN ---- TOKEN ------
+# TOKEN ---- TOKEN ---- TOKEN ----
+
+# class Token(BaseModel):
+#     access_token: str
+#     token_type: str
+
+
+# class TokenData(BaseModel):
+#     email: Optional[str] = None
