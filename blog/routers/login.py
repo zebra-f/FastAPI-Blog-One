@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends, status
 from sqlalchemy.orm import Session
 from datetime import timedelta
+from fastapi.security import OAuth2PasswordRequestForm
 
 from .. import schemas, models
 from ..database import get_db
@@ -14,9 +15,9 @@ router = APIRouter(
 )
 
 
-@router.post("/", status_code=status.HTTP_202_ACCEPTED)
-def login(request: schemas.Login, db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(models.User.email == request.email).first()
+@router.post("/", status_code=status.HTTP_202_ACCEPTED, response_model=schemas.Token)
+def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.name == request.username).first()
     
     if user and verify_password(request.password, user.password):
         access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)

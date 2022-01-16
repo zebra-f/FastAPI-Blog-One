@@ -66,14 +66,14 @@ class Login(BaseModel):
     email: str
     password: str
 
-# TOKEN ---- TOKEN ---- TOKEN --------
-# TOKEN ---- TOKEN ---- TOKEN ------
-# TOKEN ---- TOKEN ---- TOKEN ----
+# JWTOKEN ---- JWTOKEN ---- JWTOKEN --------
+# JWTOKEN ---- JWTOKEN ---- JWTOKEN ------
+# JWTOKEN ---- JWTOKEN ---- JWTOKEN ----
 
-# class Token(BaseModel):
-#     access_token: str
-#     token_type: str
+class Token(BaseModel):
+    access_token: str
+    token_type: str
 
 
-# class TokenData(BaseModel):
-#     email: Optional[str] = None
+class TokenData(BaseModel):
+    email: Optional[str] = None
